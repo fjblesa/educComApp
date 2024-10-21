@@ -1,0 +1,208 @@
+  /* General Styles */
+  body {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 28px;
+    margin: 0;
+    padding: 0;
+    background: url('/relax.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: black
+  }
+
+
+  /* Meditation Timer CSS */
+
+  .meditation-timer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .timer-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .time-remaining {
+    font-size: 48px;
+    font-weight: bold;
+    color: #c58df7;
+    margin-bottom: 15px;
+  }
+
+  .start-button {
+    background-color: #c58df7;
+    color: black;
+    padding: 12px 20px;
+    border-radius: 25px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  .stop-button {
+    background-color: #c58df7;
+    color: black;
+    padding: 12px 20px;
+    border-radius: 25px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  .start-button:hover {
+    background-color:#c58df7;
+  }
+
+  .stop-button:hover {
+    background-color:#c58df7;
+  }
+
+  .timer-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .timer-buttons button {
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    text-align: center;
+    color: #333;
+    font-size: 32px;
+    margin-top: 20px;
+  }
+
+  /* Received Page CSS */
+
+  .received-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .received-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .received-item {
+    margin-bottom: 20px;
+  }
+
+/* Sended Page CSS */
+
+  .sended-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .sended-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .sended-item {
+    margin-bottom: 20px;
+  }
+
+
+/* SendMessagePage CSS */
+  .send-message-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .send-message-page textarea {
+    width: 60%;
+    padding: 30px;
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+
+  .send-message-page select {
+    width: 30%;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+
+  .send-message-page button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #c58df7;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .send-message-page button:hover {
+    background-color: #c58df7;
+  }
+
+
+/* ProfilePage CSS */
+  .profile-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .title {
+    text-align: center;
+    color: #333;
+  }
+
+  .input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .select {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  button {
+    background-color: #7fbcba;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px; /* Añadido para colocar el botón debajo del todo */
+  }
+
+  button:hover {
+    background-color: #66a39c;
+  }
+
+  .text {
+    color: black;
+    font-size: 16px;
+  }
