@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 
 interface Send {
@@ -13,13 +12,26 @@ interface Send {
 
 const SendedPage: React.FC = () => {
   const [sended, setSended] = useState<Send[]>([]);
+  const [user, setUser] = useState({
+    id: '',
+    name: '',
+    surName: '',
+    surName2: '',
+    userName: '',
+    password: '',
+    role: 'STUDENT',
+  });
   const location = useLocation();
-  const userId = location.state?.user?.id; // Obtiene el userId del usuario autenticado
 
   useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+
     const fetchSended = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/messages/sent?userId=${userId}`);
+        const response = await fetch(`http://localhost:8080/api/messages/sent?userId=${user.id}`);
         const data = await response.json();
         setSended(data);
       } catch (error) {
@@ -27,10 +39,10 @@ const SendedPage: React.FC = () => {
       }
     };
 
-    if (userId) {
+    if (user.id) {
       fetchSended();
     }
-  }, [userId]);
+  }, [user.id]);
 
   return (
     <div className="sended-page">

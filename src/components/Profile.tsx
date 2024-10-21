@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
-import { faker } from '@faker-js/faker';
 
 const ProfileContainer = styled.div.attrs({
   className: 'profile-container',
@@ -25,8 +23,8 @@ const Text = styled.text.attrs({
 })``;
 
 const Profile: React.FC = () => {
-  const location = useLocation();
   const [user, setUser] = useState({
+    id:'',
     name: '',
     surName: '',
     surName2: '',
@@ -37,23 +35,22 @@ const Profile: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    if (location.state && location.state.user) {
-      setUser(location.state.user);
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
     } else {
-      fetchMockUserData();
+      fetchUserData();
     }
-  }, [location.state]);
+  }, []);
 
-  const fetchMockUserData = () => {
-    const randomUser = {
-      name: faker.animal.bear(),
-      surName: faker.animal.bear(),
-      surName2: faker.animal.cat(),
-      userName: faker.animal.bird(),
-      password: faker.food.dish(),
-      role: 'STUDENT',
-    };
-    setUser(randomUser);
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/user/?userId=');
+      setUser(response.data); // Guarda la respuesta en el estado del usuario
+      localStorage.setItem('user', JSON.stringify(response.data)); // Guarda los datos en localStorage
+    } catch (error) {
+      console.error('Error al obtener los datos del usuario:', error);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -63,9 +60,10 @@ const Profile: React.FC = () => {
 
   const handleSave = async () => {
     try {
-      const response = await axios.put('https://tu-backend-api.com/api/user/profile', user);
+      const response = await axios.put('https://tu-backend-api.com/api/user/profile', user); // Cambia la URL por la de tu backend
       alert('Información guardada: ' + JSON.stringify(response.data));
       setIsEditing(false);
+      localStorage.setItem('user', JSON.stringify(user)); // Guardar usuario en localStorage
     } catch (error) {
       console.error('Error al guardar los datos del usuario:', error);
     }

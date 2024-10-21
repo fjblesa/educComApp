@@ -82,7 +82,8 @@ const Login: React.FC = () => {
       const url = 'http://localhost:8080/api/auth/login'; // URL del backend en localhost
       const response = await axios.post(url, { userName, password });
       alert('Se ha logado correctamente');
-      navigate('/profile', { state: { user: response.data } }); // Redirige al perfil con los datos del usuario
+      localStorage.setItem('user', JSON.stringify(response.data)); // Almacena los datos del usuario en localStorage
+      navigate('/profile'); // Redirige al perfil después de iniciar sesión
     } catch (error) {
       console.error('Error en la autenticación:', error);
 

@@ -4,7 +4,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './components/Home';
 import SendMessagePage from './components/SendMessagePage';
-import SededPage from './components/SededPage';
+import SendedPage from './components/SendedPage';
 import ReceivedPage from './components/ReceivedPage';
 import Profile from './components/Profile';
 import Login from './components/Login';
@@ -17,7 +17,7 @@ const App: React.FC = () => (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/send" element={<SendMessagePage />} />
-      <Route path="/sended" element={<SededPage />} />
+      <Route path="/sended" element={<SendedPage />} />
       <Route path="/received" element={<ReceivedPage />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/login" element={<Login />} />
