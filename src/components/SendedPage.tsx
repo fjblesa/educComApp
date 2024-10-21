@@ -12,7 +12,7 @@ interface Send {
 
 const SendedPage: React.FC = () => {
   const [sended, setSended] = useState<Send[]>([]);
-  const [user, setUser] = useState({
+  const [user, setUser ] = useState({
     id: '',
     name: '',
     surName: '',
@@ -24,9 +24,9 @@ const SendedPage: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
+    const savedUser  = localStorage.getItem('user');
+    if (savedUser ) {
+      setUser (JSON.parse(savedUser ));
     }
 
     const fetchSended = async () => {
@@ -47,17 +47,29 @@ const SendedPage: React.FC = () => {
   return (
     <div className="sended-page">
       <h2>Mensajes enviados</h2>
-      <ul className="sended-list">
+      <div className="sended-list">
         {sended.map(message => (
-          <li key={message.id} className="sended-item">
-            <h3>{message.content}</h3>
-            <p>Fecha: {new Date(message.creationDate).toLocaleString()}</p>
-            <p>Leído: {message.read ? "Sí" : "No"}</p>
-          </li>
+          <div key={message.id} className="sended-item" style={styles.box}>
+            <p><strong>Mensaje:</strong> {message.content}</p>
+            <p><strong>Fecha:</strong> {new Date(message.creationDate).toLocaleString()}</p>
+            <p><strong>Leído:</strong> {message.read ? "Sí" : "No"}</p>
+            <p><strong>Enviado para:</strong> {message.receiverId}</p>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
+};
+
+// Estilos para las "cajitas"
+const styles = {
+  box: {
+    border: '1px solid #ccc',
+    borderRadius: '5px',
+    padding: '10px',
+    margin: '10px 0',
+    backgroundColor: '#f9f9f9',
+  }
 };
 
 export default SendedPage;

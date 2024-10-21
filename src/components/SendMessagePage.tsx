@@ -3,7 +3,9 @@ import React, { useState, useEffect } from 'react';
 interface User {
   id: number;
   name: string;
-  role: 'teacher' | 'student';
+  surName: string;
+  surName2: string;
+  role: 'TEACHER' | 'STUDENT';
 }
 
 const SendMessagePage: React.FC = () => {
@@ -11,26 +13,29 @@ const SendMessagePage: React.FC = () => {
   const [receiverId, setReceiverId] = useState<number | null>(null);
   const [senderId, setSenderId] = useState<number | null>(null);
   const [users, setUsers] = useState<User[]>([]);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser , setCurrentUser ] = useState<User | null>(null);
 
   useEffect(() => {
-    // Fetch the current user and set senderId
-    const fetchCurrentUser = async () => {
-      const response = await fetch('/api/currentUser');
-      const data = await response.json();
-      setCurrentUser(data);
-      setSenderId(data.id);
-    };
+    // Obtener el usuario logado desde localStorage
+    const savedUser  = localStorage.getItem('user');
+    if (savedUser ) {
+      const userData = JSON.parse(savedUser );
+      setCurrentUser (userData);
+      setSenderId(userData.id);
 
-    // Fetch the users list
-    const fetchUsers = async () => {
-      const response = await fetch('/api/users');
-      const data = await response.json();
-      setUsers(data);
-    };
+      // Fetch users based on the current user's role
+      const userRoleEndpoint = userData.role === 'TEACHER'
+        ? 'http://localhost:8080/api/user/students'
+        : 'http://localhost:8080/api/user/teachers';
 
-    fetchCurrentUser();
-    fetchUsers();
+      const fetchUsers = async () => {
+        const userResponse = await fetch(userRoleEndpoint);
+        const usersData = await userResponse.json();
+        setUsers(usersData);
+      };
+
+      fetchUsers();
+    }
   }, []);
 
   const handleSend = async () => {
@@ -86,18 +91,15 @@ const SendMessagePage: React.FC = () => {
           value={receiverId ?? ''}
           onChange={(e) => setReceiverId(Number(e.target.value))}
         >
-        <option value="">--Selecciona un usuario--</option>
-          {users
-            .filter((user) => user.id !== currentUser?.id)
-            .map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.name} ({user.role})
-              </option>
-             ))}
+          <option value="">--Selecciona un usuario--</option>
+          {users.map((user) => (
+            <option key={user.id} value={user.id}>
+              {`${user.name} ${user.surName} ${user.surName2}`}
+            </option>
+          ))}
         </select>
         <button onClick={handleSend}>Enviar</button>
       </div>
-     
     </div>
   );
 };
