@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
-const ProfileContainer = styled.div.attrs({
-  className: 'profile-container',
+const RegisterContainer = styled.div.attrs({
+  className: 'register-container',
 })`
   display: flex;
   flex-direction: column;
@@ -20,7 +20,7 @@ const Input = styled.input.attrs({
   className: 'input',
 })`
   padding: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 10px; /* Espaciado ajustado */
   width: 100%;
 `;
 
@@ -42,7 +42,12 @@ const FormField = styled.div`
   width: 90%;
 `;
 
-const Profile: React.FC = () => {
+const ErrorMessage = styled.p`
+  color: red;
+  font-size: 14px;
+`;
+
+const Register: React.FC = () => {
   const [user, setUser] = useState({
     id: '',
     name: '',
@@ -53,6 +58,7 @@ const Profile: React.FC = () => {
     role: 'STUDENT',
   });
   const [isEditing, setIsEditing] = useState(false);
+  const [errors, setErrors] = useState({}); // Para almacenar errores de validación
 
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
@@ -76,11 +82,29 @@ const Profile: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
+    setErrors({ ...errors, [name]: '' }); // Limpiar el error al cambiar el valor
+  };
+
+  const validateFields = () => {
+    const newErrors: any = {}; // Objeto para almacenar los errores
+
+    // Validar campos obligatorios
+    if (!user.userName) newErrors.userName = 'El nombre de usuario es obligatorio';
+    if (!user.name) newErrors.name = 'El nombre es obligatorio';
+    if (!user.surName) newErrors.surName = 'El primer apellido es obligatorio';
+    if (!user.surName2) newErrors.surName2 = 'El segundo apellido es obligatorio';
+    if (!user.password) newErrors.password = 'La contraseña es obligatoria';
+
+    setErrors(newErrors); // Establecer los errores en el estado
+
+    return Object.keys(newErrors).length === 0; // Retornar verdadero si no hay errores
   };
 
   const handleSave = async () => {
+    if (!validateFields()) return; // Validar antes de guardar
+
     try {
-      const response = await axios.put('https://tu-backend-api.com/api/user/profile', user); // Cambia la URL por la de tu backend
+      const response = await axios.put('https://tu-backend-api.com/api/user/profile', user); 
       alert('Información guardada: ' + JSON.stringify(response.data));
       setIsEditing(false);
       localStorage.setItem('user', JSON.stringify(user)); // Guardar usuario en localStorage
@@ -90,7 +114,7 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <ProfileContainer>
+    <RegisterContainer>
       <Title>Perfil de usuario</Title>
       <FormField>
         <Text>Usuario</Text>
@@ -101,6 +125,7 @@ const Profile: React.FC = () => {
           value={user.userName}
           onChange={handleChange}
         />
+        {errors.userName && <ErrorMessage>{errors.userName}</ErrorMessage>}
       </FormField>
       <FormField>
         <Text>Nombre</Text>
@@ -111,6 +136,7 @@ const Profile: React.FC = () => {
           value={user.name}
           onChange={handleChange}
         />
+        {errors.name && <ErrorMessage>{errors.name}</ErrorMessage>}
       </FormField>
       <FormField>
         <Text>Primer Apellido</Text>
@@ -121,6 +147,7 @@ const Profile: React.FC = () => {
           value={user.surName}
           onChange={handleChange}
         />
+        {errors.surName && <ErrorMessage>{errors.surName}</ErrorMessage>}
       </FormField>
       <FormField>
         <Text>Segundo Apellido</Text>
@@ -131,16 +158,18 @@ const Profile: React.FC = () => {
           value={user.surName2}
           onChange={handleChange}
         />
+        {errors.surName2 && <ErrorMessage>{errors.surName2}</ErrorMessage>}
       </FormField>
       <FormField>
         <Text>Nueva Password</Text>
         <Input
-          type="text"
+          type="password"
           name="password"
-          placeholder="Nueva Password"
+          placeholder="Password"
           value={user.password}
           onChange={handleChange}
         />
+        {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
       </FormField>
       <FormField>
         <Text>Tipo de usuario</Text>
@@ -155,11 +184,11 @@ const Profile: React.FC = () => {
         </select>
       </FormField>
       <Button onClick={() => setIsEditing(!isEditing)}>
-        {isEditing ? 'Cancelar' : 'Modificar'}
+        {isEditing ? 'Cancelar' : 'Registrar'}
       </Button>
       {isEditing && <Button onClick={handleSave}>Guardar cambios</Button>}
-    </ProfileContainer>
+    </RegisterContainer>
   );
 };
 
-export default Profile;
+export default Register;

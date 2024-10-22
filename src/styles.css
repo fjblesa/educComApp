@@ -162,7 +162,7 @@ h1 {
 }
 
 button {
-    background-color: #7fbcba;
+    background-color: #c58df7;
     color: white;
     border: none;
     padding: 10px 15px;
@@ -172,7 +172,7 @@ button {
 }
 
 button:hover {
-    background-color: #66a39c;
+    background-color: #af60c7;
 }
 
 .text {

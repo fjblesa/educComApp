@@ -42,6 +42,13 @@ const Home = () => {
       localStorage.removeItem('user'); // Cerrar sesión
       setIsLoggedIn(false); // Actualiza el estado
       alert('Sesión cerrada');
+
+      // Simula el clic en el botón de cerrar sesión del Header
+      const logoutButton = document.getElementById('logoutButton');
+      if (logoutButton) {
+        logoutButton.click(); 
+        window.location.reload(true);
+      }
     } else {
       navigate('/login'); // Redirigir a la página de inicio de sesión
     }

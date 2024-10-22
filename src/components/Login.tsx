@@ -50,7 +50,7 @@ const Button = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #66a39c;
+    background-color: #af60c7;
   }
 `;
 
@@ -83,12 +83,13 @@ const Login: React.FC = () => {
       const response = await axios.post(url, { userName, password });
       alert('Se ha logado correctamente');
       localStorage.setItem('user', JSON.stringify(response.data)); // Almacena los datos del usuario en localStorage
-      navigate('/profile'); // Redirige al perfil después de iniciar sesión
+      navigate('/profile');
+      window.location.reload(true);
     } catch (error) {
       console.error('Error en la autenticación:', error);
 
       if (axios.isAxiosError(error)) {
-        setError(error.response?.data.message || 'Error desconocido'); // Optional chaining and default message
+        setError(error.response?.data.message || 'Credenciales erroneas'); // Optional chaining and default message
       } else {
         setError('Error desconocido');
       }

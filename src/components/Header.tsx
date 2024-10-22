@@ -13,6 +13,7 @@ const HeaderContainer = styled.header`
   margin: 0 auto;
   padding: 20px;
 `;
+
 const Nav = styled.nav`
   background-color: #c58df7;
   padding: 5px;
@@ -21,6 +22,7 @@ const Nav = styled.nav`
   align-items: center;
   flex-direction: column;
 `;
+
 const Sidebar = styled.div`
   height: 100vh;
   width: 150px;
@@ -30,6 +32,7 @@ const Sidebar = styled.div`
   background-color: #33a0ec;
   padding-top: 20px;
 `;
+
 const NavLink = styled(Link)`
   display: block;
   color: white;
@@ -39,6 +42,7 @@ const NavLink = styled(Link)`
     background-color: #fabd59;
   }
 `;
+
 const HeaderTitle2 = styled.h2`
   font-style: italic;
   font-size: 32px;
@@ -56,14 +60,14 @@ const Header: React.FC = () => {
     // Simular hacer click en los botones de inicio/cierre de sesión
     const loginButton = document.querySelector('#loginButton') as HTMLElement;
     const logoutButton = document.querySelector('#logoutButton') as HTMLElement;
-  
+
     if (isLoggedIn) {
       logoutButton?.click(); // Hacer click en el botón de cerrar sesión
     } else {
       loginButton?.click(); // Hacer click en el botón de iniciar sesión
     }
   };
-  
+
   return (
     <HeaderContainer>
       <img src="/logo.svg" alt="Logo" />
@@ -81,11 +85,12 @@ const Header: React.FC = () => {
           )}
         </Nav>
       </Sidebar>
+      
+      {/* Botones ocultos de login y logout */}
       <button id="loginButton" style={{ display: 'none' }}>Iniciar sesión</button>
       <button id="logoutButton" style={{ display: 'none' }}>Cerrar sesión</button>
-      <button onClick={toggleLogin}>
-        {isLoggedIn ? 'Cerrar sesión' : 'Iniciar sesión'}
-      </button>
+
+      {/* El botón de iniciar/cerrar sesión no se muestra en absoluto */}
     </HeaderContainer>
   );
 };
