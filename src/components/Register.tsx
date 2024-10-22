@@ -92,7 +92,6 @@ const Register: React.FC = () => {
     if (!user.userName) newErrors.userName = 'El nombre de usuario es obligatorio';
     if (!user.name) newErrors.name = 'El nombre es obligatorio';
     if (!user.surName) newErrors.surName = 'El primer apellido es obligatorio';
-    if (!user.surName2) newErrors.surName2 = 'El segundo apellido es obligatorio';
     if (!user.password) newErrors.password = 'La contraseña es obligatoria';
 
     setErrors(newErrors); // Establecer los errores en el estado
@@ -115,13 +114,13 @@ const Register: React.FC = () => {
 
   return (
     <RegisterContainer>
-      <Title>Perfil de usuario</Title>
+      <Title>Nuevo de usuario</Title>
       <FormField>
         <Text>Usuario</Text>
         <Input
           type="text"
           name="userName"
-          placeholder="Nombre usuario"
+          placeholder="Nombre usuario *"
           value={user.userName}
           onChange={handleChange}
         />
@@ -132,7 +131,7 @@ const Register: React.FC = () => {
         <Input
           type="text"
           name="name"
-          placeholder="Nombre"
+          placeholder="Nombre *"
           value={user.name}
           onChange={handleChange}
         />
@@ -143,7 +142,7 @@ const Register: React.FC = () => {
         <Input
           type="text"
           name="surName"
-          placeholder="Primer Apellido"
+          placeholder="Primer Apellido *"
           value={user.surName}
           onChange={handleChange}
         />
@@ -165,7 +164,7 @@ const Register: React.FC = () => {
         <Input
           type="password"
           name="password"
-          placeholder="Password"
+          placeholder="Password *"
           value={user.password}
           onChange={handleChange}
         />
