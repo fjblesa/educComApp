@@ -8,6 +8,10 @@ const HeaderContainer = styled.header`
   background-color: white;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   flex-direction: column; 
+  width: 60%;
+  max-width: 500px;
+  margin: 0 auto; 
+  padding: 20px;
 `;
 
 const Nav = styled.nav`
@@ -47,12 +51,21 @@ const HeaderTitle2 = styled.h2`
 `;
 
 const Header: React.FC = () => {
+  // Obtener el usuario guardado en localStorage
+  const savedUser   = localStorage.getItem('user');
+  
   // Estado para controlar si el usuario está logueado
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(savedUser  !== null);
 
   // Función para simular el login/logout
   const toggleLogin = () => {
-    setIsLoggedIn(!isLoggedIn);
+    setIsLoggedIn(prevState => !prevState);
+    // Simular guardar o eliminar el usuario en localStorage
+    if (isLoggedIn) {
+      localStorage.removeItem('user'); // Cerrar sesión
+    } else {
+      localStorage.setItem('user', 'someUser '); // Iniciar sesión (puedes cambiar 'someUser ' por el valor real)
+    }
   };
 
   return (
@@ -74,10 +87,10 @@ const Header: React.FC = () => {
           )}
         </Nav>
       </Sidebar>
-      {/* Botón para simular inicio/cierre de sesión */}
-      <button onClick={toggleLogin}>
+      {/* Botón oculto para simular inicio/cierre de sesión */}
+      {/* <button onClick={toggleLogin}>
         {isLoggedIn ? 'Cerrar sesión' : 'Iniciar sesión'}
-      </button>
+      </button> */}
     </HeaderContainer>
   );
 };
