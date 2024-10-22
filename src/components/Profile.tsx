@@ -103,7 +103,7 @@ const Profile: React.FC = () => {
     if (!validateFields()) return; // Validar antes de guardar
 
     try {
-      const response = await axios.put('https://tu-backend-api.com/api/user/profile', user); // Cambia la URL por la de tu backend
+      const response = await axios.put('http://localhost:8080/api/user/', user); // Cambia la URL por la de tu backend
       alert('Información guardada: ' + JSON.stringify(response.data));
       setIsEditing(false);
       localStorage.setItem('user', JSON.stringify(user)); // Guardar usuario en localStorage

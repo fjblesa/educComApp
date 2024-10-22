@@ -12,16 +12,19 @@ const SendMessagePage: React.FC = () => {
   const [content, setContent] = useState('');
   const [receiverId, setReceiverId] = useState<number | null>(null);
   const [senderId, setSenderId] = useState<number | null>(null);
+  const [receiverName, setReceiverName] = useState('');
+  const [senderName, setSenderName] = useState('');
   const [users, setUsers] = useState<User[]>([]);
-  const [currentUser , setCurrentUser ] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   useEffect(() => {
     // Obtener el usuario logado desde localStorage
-    const savedUser  = localStorage.getItem('user');
-    if (savedUser ) {
-      const userData = JSON.parse(savedUser );
-      setCurrentUser (userData);
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      const userData = JSON.parse(savedUser);
+      setCurrentUser(userData);
       setSenderId(userData.id);
+      setSenderName(`${userData.name} ${userData.surName} ${userData.surName2}`); // Set senderName
 
       // Fetch users based on the current user's role
       const userRoleEndpoint = userData.role === 'TEACHER'
@@ -38,20 +41,32 @@ const SendMessagePage: React.FC = () => {
     }
   }, []);
 
+  const handleReceiverChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedUserId = Number(e.target.value);
+    const selectedUser = users.find((user) => user.id === selectedUserId);
+
+    setReceiverId(selectedUserId);
+    if (selectedUser) {
+      setReceiverName(`${selectedUser.name} ${selectedUser.surName} ${selectedUser.surName2}`); // Set receiverName
+    }
+  };
+
   const handleSend = async () => {
     if (receiverId === null || content === '') {
       alert('Por favor, completa todos los campos.');
       return;
     }
-
+    
     const message = {
       content,
       receiverId,
       senderId,
+      senderName,
+      receiverName,
     };
 
     try {
-      const response = await fetch('/api/messages/send', {
+      const response = await fetch('http://localhost:8080/api/messages/send', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,7 +104,7 @@ const SendMessagePage: React.FC = () => {
         <select
           id="receiver"
           value={receiverId ?? ''}
-          onChange={(e) => setReceiverId(Number(e.target.value))}
+          onChange={handleReceiverChange} // Actualizar con la función handleReceiverChange
         >
           <option value="">--Selecciona un usuario--</option>
           {users.map((user) => (

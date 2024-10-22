@@ -6,6 +6,8 @@ interface Received {
   content: string;
   senderId: number;
   receiverId: number;
+  senderName: string;
+  receiverName:string;
   creationDate: string;
   read: boolean;
 }
@@ -53,7 +55,7 @@ const ReceivedPage: React.FC = () => {
             <p><strong>Mensaje:</strong> {message.content}</p>
             <p><strong>Fecha:</strong> {new Date(message.creationDate).toLocaleString()}</p>
             <p><strong>Leído:</strong> {message.read ? "Sí" : "No"}</p>
-            <p><strong>Enviado por:</strong> {message.senderId}</p>
+            <p><strong>Enviado por:</strong> {message.senderName}</p>
           </div>
         ))}
       </div>
