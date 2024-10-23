@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -28,6 +29,7 @@ const Button = styled.button.attrs({
   className: 'button',
 })`
   margin-top: 10px;
+  margin-right: 10px; /* Añade espacio entre los botones */
 `;
 
 const Text = styled.label.attrs({
@@ -47,6 +49,12 @@ const ErrorMessage = styled.p`
   font-size: 14px;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  width: 90%; /* Mantén el mismo ancho que los campos del formulario */
+`;
+
 const Register: React.FC = () => {
   const [user, setUser] = useState({
     id: '',
@@ -57,8 +65,9 @@ const Register: React.FC = () => {
     password: '',
     role: 'STUDENT',
   });
-  const [isEditing, setIsEditing] = useState(false);
   const [errors, setErrors] = useState({}); // Para almacenar errores de validación
+  const [apiError, setApiError] = useState(''); // Nuevo estado para manejar errores de la API
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
@@ -87,29 +96,36 @@ const Register: React.FC = () => {
 
   const validateFields = () => {
     const newErrors: any = {}; // Objeto para almacenar los errores
-
     // Validar campos obligatorios
     if (!user.userName) newErrors.userName = 'El nombre de usuario es obligatorio';
     if (!user.name) newErrors.name = 'El nombre es obligatorio';
     if (!user.surName) newErrors.surName = 'El primer apellido es obligatorio';
     if (!user.password) newErrors.password = 'La contraseña es obligatoria';
-
     setErrors(newErrors); // Establecer los errores en el estado
-
     return Object.keys(newErrors).length === 0; // Retornar verdadero si no hay errores
   };
 
   const handleSave = async () => {
     if (!validateFields()) return; // Validar antes de guardar
-
     try {
-      const response = await axios.put('http://localhost:8080/api/user/', user); 
-      alert('Usuario actualizado correctamente: ');
-      setIsEditing(false);
+      const response = await axios.post('http://localhost:8080/api/auth/register', user);
+      alert('Usuario registrado correctamente');
       localStorage.setItem('user', JSON.stringify(user)); // Guardar usuario en localStorage
+      navigate('/profile'); // Redirigir a la página de perfil
+      window.location.reload(true); // Recargar la página
     } catch (error) {
-      console.error('Error al guardar los datos del usuario:', error);
+      if (axios.isAxiosError(error) && error.response && error.response.status === 400) {
+        setApiError('El usuario ya existe');
+      } else {
+        console.error('Error al guardar los datos del usuario:', error);
+      }
     }
+  };
+
+  const handleCancel = () => {
+    navigate('/login'); 
+    localStorage.removeItem('user');// Redirigir a la página de inicio de sesión
+    window.location.reload(true); // Recargar la página
   };
 
   return (
@@ -182,10 +198,11 @@ const Register: React.FC = () => {
           <option value="TEACHER">TEACHER</option>
         </select>
       </FormField>
-      <Button onClick={() => setIsEditing(!isEditing)}>
-        {isEditing ? 'Cancelar' : 'Registrar'}
-      </Button>
-      {isEditing && <Button onClick={handleSave}>Guardar cambios</Button>}
+      {apiError && <ErrorMessage>{apiError}</ErrorMessage>}
+      <ButtonContainer>
+        <Button onClick={handleCancel}>Cancelar</Button>
+        <Button onClick={handleSave}>Registrar</Button>
+      </ButtonContainer>
     </RegisterContainer>
   );
 };
