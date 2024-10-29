@@ -54,7 +54,7 @@ const SendedPage: React.FC = () => {
           <div key={message.id} className="sended-item" style={styles.box}>
             <p><strong>Mensaje:</strong> {message.content}</p>
             <p><strong>Fecha:</strong> {new Date(message.creationDate).toLocaleString()}</p>
-            <p><strong>Leído:</strong> {message.read ? "Sí" : "No"}</p>
+            {/*<p><strong>Leído:</strong> {message.read ? "Sí" : "No"}</p>*/}
             <p><strong>Enviado a:</strong> {message.receiverName}</p>
           </div>
         ))}

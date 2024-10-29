@@ -30,6 +30,12 @@ const Button = styled.button.attrs({
   margin-top: 10px;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 10px;  /* spacing between buttons */
+  margin-top: 10px;  /* optional: if you want some space above the buttons */
+`;
+
 const Text = styled.label.attrs({
   className: 'text',
 })`
@@ -57,8 +63,9 @@ const Profile: React.FC = () => {
     password: '',
     role: 'STUDENT',
   });
+
   const [isEditing, setIsEditing] = useState(false);
-  const [errors, setErrors] = useState({}); // Para almacenar errores de validación
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
@@ -72,8 +79,8 @@ const Profile: React.FC = () => {
   const fetchUserData = async () => {
     try {
       const response = await axios.get('http://localhost:8080/api/user/?userId=');
-      setUser(response.data); // Guarda la respuesta en el estado del usuario
-      localStorage.setItem('user', JSON.stringify(response.data)); // Guarda los datos en localStorage
+      setUser(response.data);
+      localStorage.setItem('user', JSON.stringify(response.data));
     } catch (error) {
       console.error('Error al obtener los datos del usuario:', error);
     }
@@ -82,40 +89,35 @@ const Profile: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
-    setErrors({ ...errors, [name]: '' }); // Limpiar el error al cambiar el valor
+    setErrors({ ...errors, [name]: '' });
   };
 
   const validateFields = () => {
-    const newErrors: any = {}; // Objeto para almacenar los errores
-
-    // Validar campos obligatorios
+    const newErrors: any = {};
     if (!user.userName) newErrors.userName = 'El nombre de usuario es obligatorio';
     if (!user.name) newErrors.name = 'El nombre es obligatorio';
     if (!user.surName) newErrors.surName = 'El primer apellido es obligatorio';
     if (!user.password) newErrors.password = 'La contraseña es obligatoria';
-
-    setErrors(newErrors); // Establecer los errores en el estado
-
-    return Object.keys(newErrors).length === 0; // Retornar verdadero si no hay errores
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSave = async () => {
-    if (!validateFields()) return; // Validar antes de guardar
-
+    if (!validateFields()) return;
     try {
-      const response = await axios.put('http://localhost:8080/api/user/', user); // Cambia la URL por la de tu backend
-      alert('Información guardada: ' + JSON.stringify(response.data));
+      const response = await axios.put('http://localhost:8080/api/user/', user);
+      alert('Información guardada correctamente.');
       setIsEditing(false);
-      localStorage.setItem('user', JSON.stringify(user)); // Guardar usuario en localStorage
+      localStorage.setItem('user', JSON.stringify(user));
     } catch (error) {
       console.error('Error al guardar los datos del usuario:', error);
     }
   };
 
   const handleEditToggle = () => {
-    setIsEditing(!isEditing); // Cambiar el estado de edición
+    setIsEditing(!isEditing);
     if (isEditing) {
-      setUser(JSON.parse(localStorage.getItem('user') || '{}')); // Reiniciar los datos si se cancela
+      setUser(JSON.parse(localStorage.getItem('user') || '{}'));
     }
   };
 
@@ -130,7 +132,7 @@ const Profile: React.FC = () => {
           placeholder="Nombre usuario *"
           value={user.userName}
           onChange={handleChange}
-          disabled={!isEditing} // Deshabilitar si no se está editando
+          disabled={!isEditing}
         />
         {errors.userName && <ErrorMessage>{errors.userName}</ErrorMessage>}
       </FormField>
@@ -142,7 +144,7 @@ const Profile: React.FC = () => {
           placeholder="Nombre *"
           value={user.name}
           onChange={handleChange}
-          disabled={!isEditing} // Deshabilitar si no se está editando
+          disabled={!isEditing}
         />
         {errors.name && <ErrorMessage>{errors.name}</ErrorMessage>}
       </FormField>
@@ -154,7 +156,7 @@ const Profile: React.FC = () => {
           placeholder="Primer Apellido *"
           value={user.surName}
           onChange={handleChange}
-          disabled={!isEditing} // Deshabilitar si no se está editando
+          disabled={!isEditing}
         />
         {errors.surName && <ErrorMessage>{errors.surName}</ErrorMessage>}
       </FormField>
@@ -166,7 +168,7 @@ const Profile: React.FC = () => {
           placeholder="Segundo Apellido"
           value={user.surName2}
           onChange={handleChange}
-          disabled={!isEditing} // Deshabilitar si no se está editando
+          disabled={!isEditing}
         />
         {errors.surName2 && <ErrorMessage>{errors.surName2}</ErrorMessage>}
       </FormField>
@@ -178,7 +180,7 @@ const Profile: React.FC = () => {
           placeholder="Nueva Password *"
           value={user.password}
           onChange={handleChange}
-          disabled={!isEditing} // Deshabilitar si no se está editando
+          disabled={!isEditing}
         />
         {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
       </FormField>
@@ -189,16 +191,18 @@ const Profile: React.FC = () => {
           name="role"
           value={user.role}
           onChange={handleChange}
-          disabled={!isEditing} // Deshabilitar si no se está editando
+          disabled={!isEditing}
         >
-          <option value="STUDENT">STUDENT</option>
-          <option value="TEACHER">TEACHER</option>
+          <option value="STUDENT">ESTUDIANTE</option>
+          <option value="TEACHER">PROFESOR</option>
         </select>
       </FormField>
-      <Button onClick={handleEditToggle}>
-        {isEditing ? 'Cancelar' : 'Modificar'}
-      </Button>
-      {isEditing && <Button onClick={handleSave}>Guardar cambios</Button>}
+      <ButtonContainer>
+        <Button onClick={handleEditToggle}>
+          {isEditing ? 'Cancelar' : 'Modificar'}
+        </Button>
+        {isEditing && <Button onClick={handleSave}>Guardar cambios</Button>}
+      </ButtonContainer>
     </ProfileContainer>
   );
 };

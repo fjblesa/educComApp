@@ -48,13 +48,13 @@ const ReceivedPage: React.FC = () => {
 
   return (
     <div className="received-page">
-      <h2>Mensajes enviados</h2>
+      <h2>Mensajes recibidos</h2>
       <div className="received-list">
         {received.map(message => (
           <div key={message.id} className="received-item" style={styles.box}>
             <p><strong>Mensaje:</strong> {message.content}</p>
             <p><strong>Fecha:</strong> {new Date(message.creationDate).toLocaleString()}</p>
-            <p><strong>Leído:</strong> {message.read ? "Sí" : "No"}</p>
+            {/*<p><strong>Leído:</strong> {message.read ? "Sí" : "No"}</p>*/}
             <p><strong>Enviado por:</strong> {message.senderName}</p>
           </div>
         ))}

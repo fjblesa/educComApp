@@ -112,7 +112,7 @@ const Register: React.FC = () => {
       alert('Usuario registrado correctamente');
       localStorage.setItem('user', JSON.stringify(user)); // Guardar usuario en localStorage
       navigate('/profile'); // Redirigir a la página de perfil
-      window.location.reload(true); // Recargar la página
+      window.location.reload(); // Recargar la página
     } catch (error) {
       if (axios.isAxiosError(error) && error.response && error.response.status === 400) {
         setApiError('El usuario ya existe');
@@ -125,7 +125,7 @@ const Register: React.FC = () => {
   const handleCancel = () => {
     navigate('/login'); 
     localStorage.removeItem('user');// Redirigir a la página de inicio de sesión
-    window.location.reload(true); // Recargar la página
+    window.location.reload(); // Recargar la página
   };
 
   return (
@@ -176,7 +176,7 @@ const Register: React.FC = () => {
         {errors.surName2 && <ErrorMessage>{errors.surName2}</ErrorMessage>}
       </FormField>
       <FormField>
-        <Text>Nueva Password</Text>
+        <Text>Password</Text>
         <Input
           type="password"
           name="password"
@@ -194,8 +194,8 @@ const Register: React.FC = () => {
           value={user.role}
           onChange={handleChange}
         >
-          <option value="STUDENT">STUDENT</option>
-          <option value="TEACHER">TEACHER</option>
+          <option value="STUDENT">ESTUDIANTE</option>
+          <option value="TEACHER">PROFESOR</option>
         </select>
       </FormField>
       {apiError && <ErrorMessage>{apiError}</ErrorMessage>}
